@@ -1,4 +1,4 @@
-{% extends "AstinaRedirectManagerBundle::content_layout.html.twig" %}
+{% extends "@AstinaRedirectManager/content_layout.html.twig" %}
 {% trans_default_domain "AstinaRedirectManagerBundle" %}
 
 {% block armb_content  %}
@@ -86,7 +86,7 @@
         </table>
 
         {% block armb_pagination %}
-            {% include "AstinaRedirectManagerBundle:Mapping:_pagination.html.twig" %}
+            {% include "@AstinaRedirectManager/Mapping/_pagination.html.twig" %}
         {% endblock %}
 
     {% else %}
