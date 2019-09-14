@@ -4,6 +4,9 @@ namespace Astina\Bundle\RedirectManagerBundle\Controller;
 
 use Astina\Bundle\RedirectManagerBundle\Entity\MapRepository;
 use Astina\Bundle\RedirectManagerBundle\Entity\Map;
+use Astina\Bundle\RedirectManagerBundle\Validator\MapValidator;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use FOS\UserBundle\Entity\Group;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Astina\Bundle\RedirectManagerBundle\Form\Type\MapFormType;
@@ -24,6 +27,21 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MappingController extends Controller
 {
+
+    /** @var EntityManager $entityManager */
+    protected $entityManager;
+
+    /** @var MapValidator $mapValidator */
+    protected $mapValidator;
+    /**
+     * MappingController constructor.
+     * @param EntityManager $entityManager
+     */
+    public function __construct(EntityManager $entityManager, MapValidator $mapValidator)
+    {
+        $this->entityManager = $entityManager;
+        $this->mapValidator = $mapValidator;
+    }
 
     /**
      * @Template("@AstinaRedirectManager/Mapping/index.html.twig")
@@ -69,8 +87,9 @@ class MappingController extends Controller
         $map->setRedirectHttpCode($http_code);
         $form = $this->createForm(MapFormType::class, $map);
 
-        if ($form->handleRequest($request)->isValid()) {
-            if (!$this->get('armb.map_validator')->validate($map)) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$this->mapValidator->validate($map)) {
                 $this->addFlash('error', 'mapping.flash.map_circular_redirect.error');
                 return $this->createView($form, $map);
             }
@@ -155,7 +174,7 @@ class MappingController extends Controller
     /**
      * Get repository for Map entity.
      *
-     * @return MapRepository
+     * @return EntityRepository
      */
     private function getMapRepository()
     {
@@ -165,11 +184,11 @@ class MappingController extends Controller
     /**
      * Returns Doctrine's entity manager.
      *
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     private function getEm()
     {
-        return $this->get('armb.em');
+        return $this->entityManager;
     }
 
     /**

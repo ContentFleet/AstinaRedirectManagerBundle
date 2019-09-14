@@ -81,7 +81,6 @@ class MapFormType extends AbstractType
             ->add('redirectHttpCode', ChoiceType::class, array(
                 'label' => 'form.redirectHttpCode',
                 'translation_domain' => 'AstinaRedirectManagerBundle',
-		'choices_as_values' => true,
                 'choices' => array(
                     '301 Moved Permanently' => 301,
                     '302 Found' => 302,

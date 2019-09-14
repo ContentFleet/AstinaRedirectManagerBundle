@@ -6,12 +6,24 @@ parameters:
     armb.map_validator.class: 'Astina\Bundle\RedirectManagerBundle\Validator\MapValidator'
 
 services:
+    Astina\Bundle\RedirectManagerBundle\Controller\MappingController:
+        public: true
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $mapValidator: '@armb.map_validator'
+
     armb.csv_importer:
         class: '%armb.service.csv_importer%'
         arguments: ['@doctrine.orm.entity_manager', '@armb.map_validator']
     armb.redirect_finder:
         class: '%armb.redirect_finder.class%'
         arguments: ['@doctrine.orm.entity_manager']
+
+    Astina\Bundle\RedirectManagerBundle\Validator\MapValidator:
+        alias: 'armb.map_validator'
+
     armb.map_validator:
         class: '%armb.map_validator.class%'
-        arguments: ['@doctrine.orm.entity_manager']
+        public: true
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
