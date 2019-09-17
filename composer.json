@@ -13,7 +13,6 @@
     "license": "MIT",
     "require": {
         "php": ">=5.4.0",
-        "symfony/symfony": "~2.2|~3.0|~4.0",
         "doctrine/orm": "*",
         "doctrine/doctrine-bundle": "*"
     },
