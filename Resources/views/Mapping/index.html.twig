@@ -51,7 +51,7 @@
                                     <a target="_blank" href="{{ map.urlFrom }}">{{ _self.truncateMiddle(map.urlFrom) }}</a>
                                 {% endif %}
                                 {% if map.comment|trim %}
-                                    <p class="muted">{{ map.comment|nl2br|truncate(50) }}</p>
+                                    <p class="muted">{{ map.comment|nl2br|slice(0,50) }}</p>
                                 {% endif %}
                             </td>
                             <td>
@@ -117,10 +117,8 @@
 {% endblock %}
 
 {% macro truncateMiddle(string, minLength = 25) %}
-{% spaceless %}
     {% if string|length  > (minLength + 10) %}
-        {% set string =  string|truncate(minLength)  ~ string|slice(string|length - 10) %}
+        {% set string = string|slice(0, minLength) ~ string|slice(string|length - 10) %}
     {% endif %}
     {{ string }}
-{% endspaceless %}
 {% endmacro %}

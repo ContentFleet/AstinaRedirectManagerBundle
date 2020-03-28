@@ -121,7 +121,8 @@ class MappingController extends Controller
     {
         $form = $this->createForm(MapFormType::class, $map);
 
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if (!$this->get('armb.map_validator')->validate($map)) {
                 $this->addFlash('error', 'mapping.flash.map_circular_redirect.error');
                 return $this->createView($form, $map);
