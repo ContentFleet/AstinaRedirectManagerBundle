@@ -4,6 +4,8 @@ namespace Astina\Bundle\RedirectManagerBundle\Redirect;
 
 use Astina\Bundle\RedirectManagerBundle\Entity\Map;
 use Astina\Bundle\RedirectManagerBundle\Entity\MapRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +36,9 @@ class RedirectFinder implements RedirectFinderInterface
     /**
      * @param Request $request
      *
-     * @return null|RedirectResponse
+     * @return array
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function findRedirect(Request $request)
     {
@@ -66,7 +70,12 @@ class RedirectFinder implements RedirectFinderInterface
             $this->entityManager->flush($map);
         }
 
-        return new RedirectResponse($redirectUrl, $map->getRedirectHttpCode());
+        $responseData = [
+          'redirectToUrl' => $redirectUrl,
+          'statusCode' => $map->getRedirectHttpCode()
+        ];
+
+        return $responseData;
     }
 
     /**

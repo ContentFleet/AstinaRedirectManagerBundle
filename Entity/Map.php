@@ -309,7 +309,7 @@ class Map
      */
     public function setRedirectHttpCode($redirectHttpCode)
     {
-        if (!preg_match('/^30[0-8]$/', $redirectHttpCode)) {
+        if (!preg_match('/^30[0-8]$|410/', $redirectHttpCode)) {
             throw new \Exception('Invalid redirect HTTP code');
         }
         $this->redirectHttpCode = $redirectHttpCode;

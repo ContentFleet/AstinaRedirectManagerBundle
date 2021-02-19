@@ -85,6 +85,7 @@ class MapFormType extends AbstractType
                     '301 Moved Permanently' => 301,
                     '302 Found' => 302,
                     '303 See Other' => 303,
+                    '410 Gone' => 410
                 ),
                 'attr' => $hideAdvancedSettings ? array('data-advanced-field' => '') : array(),
             ))
